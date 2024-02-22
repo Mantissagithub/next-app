@@ -5,9 +5,18 @@ import { SECRET, authenticateJwt } from '../middleware/auth';
 
 const router = express.Router();
 
-router.get('/me', authenticateJwt, async (req: Request, res: Response) => {
+interface User{
+  username : string | null;
+  password : string | null;
+}
+
+interface CustomRequest extends Request {
+  user?: User;
+}
+
+router.get('/me', authenticateJwt, async (req: CustomRequest, res: Response) => {
   try {
-    const admin = await Admin.findOne({ username: req.user.username });
+    const admin = await Admin.findOne({ username: (req.user as User).username });
     if (!admin) {
       return res.status(403).json({ msg: 'Admin does not exist' });
     }

@@ -46,22 +46,37 @@ var course_1 = require("../store/atoms/course");
 var recoil_1 = require("recoil");
 var course_2 = require("../store/selectors/course");
 function Course() {
+    var _this = this;
     var courseId = (0, react_router_dom_1.useParams)().courseId;
     var setCourse = (0, recoil_1.useSetRecoilState)(course_1.courseState);
     var courseLoading = (0, recoil_1.useRecoilValue)(course_2.isCourseLoading);
     (0, react_1.useEffect)(function () {
-        axios_1.default.get("http://localhost:3000/admin/course/".concat(courseId), {
-            method: "GET",
-            headers: {
-                "Authorization": "Bearer " + localStorage.getItem("token")
-            }
-        }).then(function (res) {
-            setCourse({ isLoading: false, course: res.data });
-        })
-            .catch(function (e) {
-            setCourse({ isLoading: false, course: null });
-        });
-    }, []);
+        var fetchData = function () { return __awaiter(_this, void 0, void 0, function () {
+            var response, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get("http://localhost:3000/admin/course/".concat(courseId), {
+                                headers: {
+                                    Authorization: "Bearer ".concat(localStorage.getItem("token"))
+                                }
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        setCourse({ isLoading: false, course: response.data });
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_1 = _a.sent();
+                        console.error("Error fetching course:", error_1);
+                        setCourse({ isLoading: false, course: null });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        fetchData();
+    }, [courseId, setCourse]);
     if (courseLoading) {
         return (0, jsx_runtime_1.jsx)(Loading_1.Loading, {});
     }
@@ -80,30 +95,39 @@ function UpdateCard() {
     var _h = (0, react_1.useState)(((_c = courseDetails === null || courseDetails === void 0 ? void 0 : courseDetails.course) === null || _c === void 0 ? void 0 : _c.image) || ""), image = _h[0], setImage = _h[1];
     var _j = (0, react_1.useState)(((_d = courseDetails === null || courseDetails === void 0 ? void 0 : courseDetails.course) === null || _d === void 0 ? void 0 : _d.price) || ""), price = _j[0], setPrice = _j[1];
     return ((0, jsx_runtime_1.jsx)("div", { style: { display: "flex", justifyContent: "center" }, children: (0, jsx_runtime_1.jsx)(material_1.Card, { variant: "outlined", style: { maxWidth: 600, marginTop: 200 }, children: (0, jsx_runtime_1.jsxs)("div", { style: { padding: 20 }, children: [(0, jsx_runtime_1.jsx)(material_1.Typography, { style: { marginBottom: 10 }, children: "Update course details" }), (0, jsx_runtime_1.jsx)(material_1.TextField, { value: description, style: { marginBottom: 10 }, onChange: function (e) { return setDescription(e.target.value); }, fullWidth: true, label: "Description", variant: "outlined" }), (0, jsx_runtime_1.jsx)(material_1.TextField, { value: _id, style: { marginBottom: 10 }, onChange: function (e) { return set_id(e.target.value); }, fullWidth: true, label: "ID", variant: "outlined" }), (0, jsx_runtime_1.jsx)(material_1.TextField, { value: image, style: { marginBottom: 10 }, onChange: function (e) { return setImage(e.target.value); }, fullWidth: true, label: "Image link", variant: "outlined" }), (0, jsx_runtime_1.jsx)(material_1.TextField, { value: price, style: { marginBottom: 10 }, onChange: function (e) { return setPrice(parseFloat(e.target.value)); }, fullWidth: true, label: "Price", variant: "outlined" }), (0, jsx_runtime_1.jsx)(material_1.Button, { variant: "contained", onClick: function () { return __awaiter(_this, void 0, void 0, function () {
-                            var updatedCourse;
-                            var _a, _b;
-                            return __generator(this, function (_c) {
-                                axios_1.default.put("http://localhost:3000/admin/courses/".concat(_id), {
-                                    title: (_a = courseDetails === null || courseDetails === void 0 ? void 0 : courseDetails.course) === null || _a === void 0 ? void 0 : _a.title,
-                                    description: description,
-                                    image: image,
-                                    published: true,
-                                    price: price
-                                }, {
-                                    headers: {
-                                        "Content-type": "application/json",
-                                        "Authorization": "Bearer " + localStorage.getItem("token")
-                                    }
-                                });
-                                updatedCourse = {
-                                    _id: _id,
-                                    title: ((_b = courseDetails === null || courseDetails === void 0 ? void 0 : courseDetails.course) === null || _b === void 0 ? void 0 : _b.title) || "",
-                                    description: description,
-                                    image: image,
-                                    price: price,
-                                };
-                                setCourse({ course: updatedCourse, isLoading: false });
-                                return [2 /*return*/];
+                            var updatedCourse, error_2;
+                            var _a;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
+                                    case 0:
+                                        _b.trys.push([0, 2, , 3]);
+                                        return [4 /*yield*/, axios_1.default.put("http://localhost:3000/admin/courses/".concat(_id), {
+                                                description: description,
+                                                image: image,
+                                                price: price
+                                            }, {
+                                                headers: {
+                                                    "Content-type": "application/json",
+                                                    Authorization: "Bearer " + localStorage.getItem("token")
+                                                }
+                                            })];
+                                    case 1:
+                                        _b.sent();
+                                        updatedCourse = {
+                                            _id: _id,
+                                            title: ((_a = courseDetails === null || courseDetails === void 0 ? void 0 : courseDetails.course) === null || _a === void 0 ? void 0 : _a.title) || "",
+                                            description: description,
+                                            image: image,
+                                            price: price
+                                        };
+                                        setCourse({ course: updatedCourse, isLoading: false });
+                                        return [3 /*break*/, 3];
+                                    case 2:
+                                        error_2 = _b.sent();
+                                        console.error("Error updating course:", error_2);
+                                        return [3 /*break*/, 3];
+                                    case 3: return [2 /*return*/];
+                                }
                             });
                         }); }, children: "Update course" })] }) }) }));
 }
@@ -118,7 +142,7 @@ function CourseCard() {
                 marginRight: 50,
                 paddingBottom: 15,
                 zIndex: 2
-            }, children: [(0, jsx_runtime_1.jsx)("img", { src: imageLink, style: { width: 350 }, alt: "course-img" }), (0, jsx_runtime_1.jsxs)("div", { style: { marginLeft: 10 }, children: [(0, jsx_runtime_1.jsx)(material_1.Typography, { variant: "h5", children: title }), (0, jsx_runtime_1.jsx)(Price, {})] })] }) }));
+            }, children: [(0, jsx_runtime_1.jsx)("img", { src: imageLink || 'fallback image-url', style: { width: 350 }, alt: "course-img" }), (0, jsx_runtime_1.jsxs)("div", { style: { marginLeft: 10 }, children: [(0, jsx_runtime_1.jsx)(material_1.Typography, { variant: "h5", children: title }), (0, jsx_runtime_1.jsx)(Price, {})] })] }) }));
 }
 function Price() {
     var price = (0, recoil_1.useRecoilValue)(course_2.coursePrice);

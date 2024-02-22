@@ -1,23 +1,21 @@
-import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-const SECRET = 'SECr3t'; // This should be in an environment variable in a real application
+const SECRET = process.env.SECRET || 'SECr3t';
 
-interface User {
-  // Define your user interface here if needed
-  username: string | null;
+interface User{
+  username : string | null;
   password : string | null;
 }
 
-const authenticateJwt = (req: Request, res: Response, next: NextFunction) => {
+const authenticateJwt = (req: any, res: any, next: any) => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
     const token = authHeader.split(' ')[1];
-    jwt.verify(token, SECRET, (err : any, user: User) => {
+    jwt.verify(token, SECRET, (err: any, user: any) => {
       if (err) {
         return res.sendStatus(403);
       }
-      req.user = user;
+      req.user = user; //as User;
       next();
     });
   } else {
@@ -25,4 +23,7 @@ const authenticateJwt = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { authenticateJwt, SECRET };
+export {
+    authenticateJwt,
+    SECRET
+};

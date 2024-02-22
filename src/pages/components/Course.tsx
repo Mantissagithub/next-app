@@ -11,7 +11,7 @@ interface CourseDetails {
   _id: string;
   title: string;
   description: string;
-  image: string;
+  image: string | null;
   price: number;
 }
 
@@ -174,7 +174,7 @@ function CourseCard() {
           zIndex: 2
         }}
       >
-        <img src={imageLink} style={{ width: 350 }} alt="course-img" />
+        <img src={imageLink || 'fallback image-url'}  style={{ width: 350 }} alt="course-img" />
         <div style={{ marginLeft: 10 }}>
           <Typography variant="h5">{title}</Typography>
           <Price />
